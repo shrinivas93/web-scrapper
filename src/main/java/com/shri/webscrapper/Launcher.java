@@ -1,6 +1,7 @@
 package com.shri.webscrapper;
 
 import static com.shri.webscrapper.Utils.END_DATE;
+import static com.shri.webscrapper.Utils.KEYWORDS;
 import static com.shri.webscrapper.Utils.NEWS_LINKS_FILE;
 import static com.shri.webscrapper.Utils.OBJECT_MAPPER;
 import static com.shri.webscrapper.Utils.PATTERN;
@@ -25,7 +26,7 @@ public class Launcher {
 	}
 
 	public static void main(String[] args) throws IOException {
-		List<News> newsList = new ArrayList<>();
+		List<News> news = new ArrayList<>();
 		long start = getDayNumber(START_DATE);
 		long end = getDayNumber(END_DATE);
 		System.out.println("Fetching news for " + (end - start + 1) + " days");
@@ -40,19 +41,20 @@ public class Launcher {
 				String link = element.absUrl("href");
 				String title = element.text();
 				if (PATTERN.matcher(title).find()) {
-					newsList.add(new News(start, link, title));
+					news.add(new News(start, link, title));
 				}
 			}
 			System.out.println("Day " + (i - start + 1));
 			i++;
 		}
 		double executionEnd = System.currentTimeMillis();
-		String newsJson = OBJECT_MAPPER.writeValueAsString(newsList);
+		String newsJson = OBJECT_MAPPER.writeValueAsString(new NewsCriteria(
+				KEYWORDS, news));
 		try (FileWriter fw = new FileWriter(NEWS_LINKS_FILE)) {
 			fw.write(newsJson);
 		}
 
-		System.out.println("News fetched = " + newsList.size());
+		System.out.println("News fetched = " + news.size());
 		System.out.println("Time taken = " + (executionEnd - executionStart)
 				/ 1000 + " seconds");
 		System.out.println("News list available at = "

@@ -41,7 +41,7 @@ public class Utils {
 	public static final File NEWS_FOLDER = createFolder(NEWS_FOLDER_STR);
 	public static final File NEWS_LINKS_FILE = createFile(NEWS_LINKS_FILE_STR);
 
-	private static final String[] KEYWORDS = { "crime" };
+	public static final String[] KEYWORDS = { "crime" };
 	public static final Pattern PATTERN = createPattern(KEYWORDS);
 
 	private Utils() {

@@ -2,10 +2,6 @@ package com.shri.webscrapper;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,8 +9,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class Utils {
 
 	public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-
-	private static final DateFormat SDF = new SimpleDateFormat("ddMMyyyy");
 
 	private static final String PROXY_HOST = "";
 	private static final String PROXY_PORT = "";
@@ -26,16 +20,12 @@ public class Utils {
 	private static final String NEWS_LINKS_FILE_STR = "news";
 	private static final String NEWS_LINKS_FILE_EXTN = ".json";
 
-	public static final String TOI_ARCHIVE_URL_PATTERN = "http://timesofindia.indiatimes.com/2016/1/1/archivelist/year-2016,month-1,starttime-{1}.cms";
-	public static final String TOI_ARCHIVE_NEWS_SELECTOR = "body>div:nth-child(1)>table:nth-child(2)>tbody>tr:nth-child(2)>td:nth-child(1)>div:nth-child(3)>table>tbody>tr:nth-child(2)>td>span>a";
+	public static final String TOI_INDORE_URL_PATTERN = "http://timesofindia.indiatimes.com/articlelist/9644624.cms?curpg={1}";
+	public static final String TOI_INDORE_NEWS_SELECTOR = "#c_articlelist_stories_2>ul.list5.clearfix>li>span.w_tle>a";
 
-	private static final Calendar DATE_1_1_1900 = initializeDate(1, 1, 1900);
-	public static final Calendar START_DATE = initializeDate(1, 1, 2016);
-	public static final Calendar END_DATE = initializeDate();
+	public static final long START_PAGE_NUMBER = 34;
 
-	private static final String FILE_SUFFIX = "_"
-			+ SDF.format(START_DATE.getTime()) + "_"
-			+ SDF.format(END_DATE.getTime());
+	private static final String INDORE_FILE_SUFFIX = "INDORE";
 
 	public static final File OUTPUT_BASE_FOLDER = createBaseFolder(OUTPUT_BASE_FOLDER_STR);
 	public static final File NEWS_FOLDER = createFolder(NEWS_FOLDER_STR);
@@ -58,14 +48,6 @@ public class Utils {
 		return Pattern.compile(regex.toString());
 	}
 
-	private static Calendar initializeDate(int date, int month, int year) {
-		Calendar calendar = initializeDate();
-		calendar.set(Calendar.DATE, date);
-		calendar.set(Calendar.MONTH, month);
-		calendar.set(Calendar.YEAR, year);
-		return calendar;
-	}
-
 	private static File createBaseFolder(String outputBaseFolderStr) {
 		File baseFolder = new File(outputBaseFolderStr);
 		baseFolder.mkdirs();
@@ -79,29 +61,14 @@ public class Utils {
 	}
 
 	private static File createFile(String newsLinksStr) {
-		File newsLinksFile = new File(OUTPUT_BASE_FOLDER, newsLinksStr
-				+ FILE_SUFFIX + NEWS_LINKS_FILE_EXTN);
+		File newsLinksFile = new File(OUTPUT_BASE_FOLDER,
+				newsLinksStr + "_" + INDORE_FILE_SUFFIX + "_" + START_PAGE_NUMBER + NEWS_LINKS_FILE_EXTN);
 		try {
 			newsLinksFile.createNewFile();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return newsLinksFile;
-	}
-
-	private static Calendar initializeDate() {
-		Calendar calendar = Calendar.getInstance();
-		calendar.set(Calendar.MILLISECOND, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.HOUR, 0);
-		return calendar;
-	}
-
-	public static long getDayNumber(Calendar date) {
-		long end = date.getTimeInMillis();
-		long start = DATE_1_1_1900.getTimeInMillis();
-		return TimeUnit.MILLISECONDS.toDays(Math.abs(end - start));
 	}
 
 	static {

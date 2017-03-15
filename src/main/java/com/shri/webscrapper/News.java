@@ -1,7 +1,7 @@
 package com.shri.webscrapper;
 
 public class News {
-	private long date;
+	private long pageNo;
 	private String link;
 	private String title;
 
@@ -9,19 +9,19 @@ public class News {
 		// Required for Jackson
 	}
 
-	public News(long date, String link, String title) {
+	public News(long pageNo, String link, String title) {
 		super();
-		this.date = date;
+		this.pageNo = pageNo;
 		this.link = link;
 		this.title = title;
 	}
 
-	public long getDate() {
-		return date;
+	public long getPageNo() {
+		return pageNo;
 	}
 
-	public void setDate(long date) {
-		this.date = date;
+	public void setPageNo(long pageNo) {
+		this.pageNo = pageNo;
 	}
 
 	public String getLink() {
@@ -42,8 +42,7 @@ public class News {
 
 	@Override
 	public String toString() {
-		return "News [date=" + date + ", link=" + link + ", title=" + title
-				+ "]";
+		return "News [pageNo=" + pageNo + ", link=" + link + ", title=" + title + "]";
 	}
 
 }

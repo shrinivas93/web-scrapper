@@ -6,7 +6,7 @@ public class News {
 	private String title;
 
 	public News() {
-		// TODO Auto-generated constructor stub
+		// Required for Jackson
 	}
 
 	public News(long date, String link, String title) {
@@ -42,7 +42,8 @@ public class News {
 
 	@Override
 	public String toString() {
-		return "News [date=" + date + ", link=" + link + ", title=" + title + "]";
+		return "News [date=" + date + ", link=" + link + ", title=" + title
+				+ "]";
 	}
 
 }
